@@ -116,7 +116,7 @@ select {
 
 label.error {
 	color: red;
-            font-weight:bold;
+	font-weight:bold;
 }
 
 .overdue {
@@ -129,6 +129,13 @@ label.error {
 
 .taskCompleted {
 	text-decoration: line-through;
+}
+
+
+#selectUserTable {
+	width: 600px;
+	float: right;
+
 }
 
 /* CSS for team input dialog */
@@ -180,3 +187,4 @@ label.error {
 	right: 10px; 
 	top: 0;
 }
+

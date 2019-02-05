@@ -17,6 +17,27 @@
 	</header>
 	<main  id="taskPage">
 	<section id="taskCreation" class="not">
+		<div id="selectUserTable">
+			<table id="userTable">
+				<colgroup>
+					<col width="40">
+					<col width="40%">
+					<col width="20%">
+
+				</colgroup>
+				<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Second Name</th>
+					<th>User ID</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
 		<form id="taskForm">
 			<input type="hidden" name="id"/>
 			<div>
@@ -37,7 +58,34 @@
 				<a href="#" id="saveTask">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
 				<a href="#" id="clearTask">Clear task</a>
 			</nav>
+
 		</form>
+
+	</section>
+		<!-- add User -->
+		<section id="userCreation" class="not">
+		<form id="addUserForm">
+			<input type="hidden" name="id"/>
+			<div>
+				<label>First Name</label> <input type="text" required="required" name="userID"
+											  class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
+			</div>
+			<div>
+				<label>Last Name</label> <input type="text" required="required"
+										   name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
+			</div>
+			<div>
+				<label>Address </label> <input type="text" required="required"
+												name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
+			</div>
+
+			<nav>
+				<a href="#" id="saveUser">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
+				<a href="#" id="clearUser">Clear task</a>
+			</nav>
+
+		</form>
+
 	</section>
 
 	<div class="teamWrapper not">
@@ -60,14 +108,16 @@
 	<section>
 		<table id="tblTasks">
 			<colgroup>
-				<col width="40%">
+				<col width="10">
+				<col width="30%">
 				<col width="15%">
 				<col width="15%">
 				<col width="30%">
 			</colgroup>
 			<thead>
 				<tr>
-					<th>Name</th>
+					<th>User ID</th>
+					<th>Task</th>
 					<th>Due</th>
 					<th>Category</th>
 					<th>Actions</th>
@@ -79,6 +129,9 @@
 		<nav>
 			<a href="#" id="btnAddTask">Add task</a>
 			<a href="#" id="btnRetrieveTasks">Retrieve tasks from server</a>
+			<a href="#" id="addUserButton">Add User</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
+			<a href="#" id="addTeamButton">Add Team</a>
+
 		</nav>
 	</section>
 	</main>
@@ -115,6 +168,7 @@ if (window.indexedDB) {
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
 <tr>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${userID}</td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
