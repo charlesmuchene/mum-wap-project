@@ -72,6 +72,11 @@ tasksController = function() {
 					$(taskPage).find('#taskCreation').removeClass('not');
 				});
 
+				$(taskPage).find('#addUserButton').click(function(evt) {
+					evt.preventDefault();
+					$(taskPage).find('#userCreation').removeClass('not');
+				});
+
                 /**	 * 11/19/17kl        */
                 $(taskPage).find('#btnRetrieveTasks').click(function(evt) {
                     evt.preventDefault();
