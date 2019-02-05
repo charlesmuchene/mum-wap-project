@@ -1,4 +1,4 @@
-tasksController = function() { 
+tasksController = function() {
 	
 	function errorLogger(errorCode, errorMessage) {
 		console.log(errorCode +':'+ errorMessage);
@@ -188,5 +188,8 @@ tasksController = function() {
 				});
 			}, errorLogger);
 		} 
-	} 
+
+	}
+	// sorting
+
 }();
