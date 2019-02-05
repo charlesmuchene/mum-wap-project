@@ -72,6 +72,11 @@ tasksController = function() {
 					$(taskPage).find('#taskCreation').removeClass('not');
 				});
 
+				$(taskPage).find('#addUserButton').click(function(evt) {
+					evt.preventDefault();
+					$(taskPage).find('#userCreation').removeClass('not');
+				});
+
                 /**	 * 11/19/17kl        */
                 $(taskPage).find('#btnRetrieveTasks').click(function(evt) {
                     evt.preventDefault();
@@ -129,6 +134,25 @@ tasksController = function() {
 						}, errorLogger);
 					}
 				});
+
+				$(taskPage).find('#teamClose').click(function(evt) {
+					evt.preventDefault();
+					$(taskPage).find('.teamWrapper').addClass('not');
+				});
+
+				$(taskPage).find('#saveTeam').click(function(event) {
+					event.preventDefault();
+					const teamForm = $(taskPage).find('#teamForm');
+					if (teamForm.valid()) {
+						const team = teamForm.toObject();
+						console.log(team);
+						// Maybe show data
+						// Persist the team
+						// Hide the input
+						$(taskPage).find('.teamWrapper').addClass('not');
+					}
+				});
+
 				initialised = true;
 			}
 		},
@@ -164,7 +188,8 @@ tasksController = function() {
 				});
 			}, errorLogger);
 		} 
+
 	}
 	// sorting
-    
+
 }();
