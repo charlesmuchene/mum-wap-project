@@ -6,6 +6,32 @@ tasksController = function() {
 	
 	var taskPage;
 	var initialised = false;
+
+    /**
+	 * makes json call to server to get task list.
+	 * currently just testing this and writing return value out to console
+	 * 111917kl
+     */
+	function retrieveTasksServer() {
+        $.ajax("TaskServlet", {
+            "type": "get",
+			dataType: "json"
+            // "data": {
+            //     "first": first,
+            //     "last": last
+            // }
+        }).done(displayTasksServer.bind()); //need reference to the tasksController object
+    }
+
+    /**
+	 * 111917kl
+	 * callback for retrieveTasksServer
+     * @param data
+     */
+    function displayTasksServer(data) { //this needs to be bound to the tasksController -- used bind in retrieveTasksServer 111917kl
+    	console.log(data);
+        tasksController.loadServerTasks(data);
+    }
 	
 	function taskCountChanged() {
 		var count = $(taskPage).find( '#tblTasks tbody tr').length;
@@ -14,37 +40,6 @@ tasksController = function() {
 	
 	function clearTask() {
 		$(taskPage).find('form').fromObject({});
-	}
-	
-	function loadTask(csvTask) {
-		var tokens = $.csv.toArray(csvTask);
-		if (tokens.length == 3) {
-			var task = {};
-			task.task = tokens[0];
-			task.requiredBy = tokens[1];
-			task.category = tokens[2];
-			return task;
-		}
-		return null;
-	}
-		
-	function loadFromCSV(event) {
-	    var reader = new FileReader();
-	    reader.onload = function(evt) {
-	        var contents = evt.target.result;
-	        var worker = new Worker('scripts/tasks-csvparser.js');
-	        worker.addEventListener('message', function(e) {
-	        	var tasks = e.data;
-	        	storageEngine.saveAll('task', tasks, function() {
-	    			tasksController.loadTasks();
-	    		},errorLogger);
-	        }, false);
-	        worker.postMessage(contents);     	
-	    };
-	    reader.onerror = function(evt) {
-	        errorLogger('cannot_read_file', 'The file specified cannot be read');
-	    };
-		reader.readAsText(event.target.files[0]);
 	}
 	
 	function renderTable() {
@@ -76,6 +71,13 @@ tasksController = function() {
 					evt.preventDefault();
 					$(taskPage).find('#taskCreation').removeClass('not');
 				});
+
+                /**	 * 11/19/17kl        */
+                $(taskPage).find('#btnRetrieveTasks').click(function(evt) {
+                    evt.preventDefault();
+                    console.log('making ajax call');
+                    retrieveTasksServer();
+                });
 				
 				$(taskPage).find('#tblTasks tbody').on('click', 'tr', function(evt) {
 					$(evt.target).closest('td').siblings().andSelf().toggleClass('rowHighlight');
@@ -91,8 +93,6 @@ tasksController = function() {
 						
 					}
 				);
-				
-				$('#importFile').change(loadFromCSV);
 				
 				$(taskPage).find('#tblTasks tbody').on('click', '.editRow', 
 					function(evt) { 
@@ -131,6 +131,22 @@ tasksController = function() {
 				});
 				initialised = true;
 			}
+		},
+        /**
+		 * 111917kl
+		 * modification of the loadTasks method to load tasks retrieved from the server
+         */
+		loadServerTasks: function(tasks) {
+            $(taskPage).find('#tblTasks tbody').empty();
+            $.each(tasks, function (index, task) {
+                if (!task.complete) {
+                    task.complete = false;
+                }
+                $('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
+                taskCountChanged();
+                console.log('about to render table with server tasks');
+                //renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
+            });
 		},
 		loadTasks : function() {
 			$(taskPage).find('#tblTasks tbody').empty();
