@@ -10,7 +10,6 @@ margin: 0;
 font-size: 12px;
 }
 
-
 header {
 	width:100%;
 	height:80px;
@@ -111,10 +110,6 @@ select {
 	color: red;
 }
 
-.not {
-	display:none;
-}
-
 .rowHighlight {
 	font-weight:bold;
 } 
@@ -136,8 +131,60 @@ label.error {
 	text-decoration: line-through;
 }
 
+
 #selectUserTable {
 	width: 600px;
 	float: right;
 
 }
+
+/* CSS for team input dialog */
+
+.teamWrapper {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	position: fixed;
+	background-color: #000000aa;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	font-size: 30px;
+}
+
+#addTeam {
+	background-color: white;
+	border-radius: 20px;
+	box-shadow: 3px 3px 3px black;
+	padding: 30px;
+	position: relative;
+	width: 30%;
+}
+
+#addTeam [type='text'] {
+	border-radius: 5px;
+	border: 1px solid lightgray;
+	padding: 10px;
+}
+
+.not {
+	display:none;
+}
+
+.close {
+	background: #53777a;
+	color: #fff;
+	border-radius: 20px;
+	margin-top: 5px;
+	text-decoration: none;
+	border: 1px solid #5b5b5b;
+	font-size: 13px;
+	text-align:  center;
+	padding: 5px 10px;
+	position: absolute; 
+	right: 10px; 
+	top: 0;
+}
+
