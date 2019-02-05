@@ -19,10 +19,23 @@
 	<section id="taskCreation" class="not">
 		<form id="taskForm">
 			<input type="hidden" name="id"/>
-			<div>
+
+            <div>
 				<label>Task</label> <input type="text" required="required"
 					name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
 			</div>
+            <div>
+                <label>Priority</label> <select name="priority">
+                <option value="None">None</option>
+                <option value="1">first</option>
+                <option value="2">second</option>
+                <option value="3">third</option>
+                <option value="4">fourth</option>
+                <option value="5">fivth</option>
+                <option value="6">sixth</option>
+            </select>
+            </div>
+
 			<div>
 				<label>Required by</label> <input type="date" required="required"
 					name="requiredBy" />
@@ -33,6 +46,8 @@
 					<option value="Work">Work</option>
 				</select>
 			</div>
+
+
 			<nav>
 				<a href="#" id="saveTask">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
 				<a href="#" id="clearTask">Clear task</a>
@@ -40,19 +55,28 @@
 		</form>
 	</section>
 	<section>
+        <div>
+            <select name="sort" >
+                <option value="sortByPriority" id="priority">Sort By Priority</option>
+                <option value="sortByUserId">Sort By User Id</option>
+            </select>
+        </div>
 		<table id="tblTasks">
 			<colgroup>
 				<col width="40%">
-				<col width="15%">
-				<col width="15%">
+				<col width="10%">
+				<col width="10%">
+				<col width="10%">
 				<col width="30%">
 			</colgroup>
 			<thead>
 				<tr>
 					<th>Name</th>
+                    <th>Priority</th>
 					<th>Due</th>
 					<th>Category</th>
-					<th>Actions</th>
+                    <th>Actions</th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -98,11 +122,12 @@ if (window.indexedDB) {
 <script id="taskRow" type="text/x-jQuery-tmpl">
 <tr>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
-	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+	<td>{{if complete == true}}class="taskCompleted"{{/if}} ${priority}</td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
-	<td>
+	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+     <td>
 		<nav>
-			{{if complete != true}}			
+			{{if complete != true}}
 				<a href="#" class="editRow" data-task-id="${id}">Edit</a>
 				<a href="#" class="completeRow" data-task-id="${id}">Complete</a>
 			{{/if}}
