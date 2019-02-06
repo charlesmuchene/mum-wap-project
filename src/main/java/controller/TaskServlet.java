@@ -1,9 +1,10 @@
 package controller;
 
 import com.google.gson.Gson;
-import model.Task;
 import repository.TaskRepository;
-import utility.MockData;
+import utility.Fetch;
+import utility.Pair;
+import utility.Utilities;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 @WebServlet("/TaskServlet")
 public class TaskServlet extends HttpServlet {
@@ -25,19 +24,15 @@ public class TaskServlet extends HttpServlet {
         repository = new TaskRepository();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    }
+        Pair<Fetch, Integer> pair = Utilities.extractFetchMethod(request);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        Object data = pair.getFirst() == Fetch.BY_ID ? repository.getTask(pair.getSecond()) : repository.getAllTasks();
+        String output = new Gson().toJson(data);
 
-        String JSONtasks;
-        List<Task> taskList = new MockData().retrieveTaskList();
-        JSONtasks = new Gson().toJson(taskList);
+        Utilities.sendAsJSON(output, response);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.write(JSONtasks);
     }
 }

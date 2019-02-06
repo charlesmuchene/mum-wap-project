@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tasks")
-public class Task  implements Model {
+public class Task implements Model {
     @Id
     @GeneratedValue
     private int id;
@@ -16,15 +16,17 @@ public class Task  implements Model {
     private Category category;
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
+    private int priority;
 
     public Task() {
     }
 
-    public Task(String name, Date dueDate, Category category, User user) {
+    public Task(String name, Date dueDate, Category category, User user, int priority) {
         this.name = name;
         this.dueDate = dueDate;
         this.category = category;
         this.user = user;
+        this.priority = priority;
     }
 
     public int getId() {
@@ -75,5 +77,13 @@ public class Task  implements Model {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

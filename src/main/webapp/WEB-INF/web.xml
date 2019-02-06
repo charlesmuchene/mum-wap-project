@@ -7,4 +7,7 @@
     <welcome-file-list>
         <welcome-file>tasks.html</welcome-file>
     </welcome-file-list>
+    <listener>
+        <listener-class>utility.CleanUpListener</listener-class>
+    </listener>
 </web-app>

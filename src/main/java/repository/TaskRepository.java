@@ -1,9 +1,6 @@
 package repository;
 
 import model.Task;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.util.Collection;
 
@@ -31,6 +28,11 @@ public class TaskRepository implements Repository {
         return retrieve(Task.class, id);
     }
 
+    /**
+     * Save the given task
+     *
+     * @param task {@link Task} instance
+     */
     public void saveTask(Task task) {
         persist(task);
     }
