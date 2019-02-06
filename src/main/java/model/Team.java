@@ -5,7 +5,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "teams")
-public class Team {
+public class Team implements Model {
     @Id @GeneratedValue
     private int id;
     private String name;

@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task  implements Model {
     @Id
     @GeneratedValue
     private int id;
