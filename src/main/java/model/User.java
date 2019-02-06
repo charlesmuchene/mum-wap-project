@@ -7,25 +7,24 @@ import java.util.Collection;
 @Table(name = "users")
 public class User implements Model {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private int id;
+    private int teamId;
     private String name;
     private String email;
     private String phone;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Location location;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Collection<Team> teams;
 
     public User() {
     }
 
-    public User(String name, String email, String phone, Location location, Collection<Team> teams) {
+    public User(String name, String email, String phone, Location location) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.location = location;
-        this.teams = teams;
     }
 
     public int getId() {
@@ -68,11 +67,11 @@ public class User implements Model {
         this.location = location;
     }
 
-    public Collection<Team> getTeams() {
-        return teams;
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setTeams(Collection<Team> teams) {
-        this.teams = teams;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }

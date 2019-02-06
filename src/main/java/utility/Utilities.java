@@ -1,5 +1,7 @@
 package utility;
 
+import com.google.gson.Gson;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
@@ -11,6 +13,8 @@ import java.io.PrintWriter;
  * Has commonly used operations
  */
 public class Utilities {
+
+    private static Gson gson = new Gson();
 
     private Utilities() {
     }
@@ -49,5 +53,24 @@ public class Utilities {
             return new Pair<>(Fetch.BY_ID, Integer.MIN_VALUE);
         }
 
+    }
+
+    /**
+     * Get json
+     *
+     * @param request {@link ServletRequest} instance
+     * @return Json representation
+     */
+    public static <T> T getJson(ServletRequest request, Class<T> klass) {
+
+        String json = gson.toJson(request.getParameterMap());
+        /* Nerve-wracking hack!! */
+        json = json.replace("[", "");
+        json = json.replace("]", "");
+        return gson.fromJson(json, klass);
+    }
+
+    public static String toJson(Object object) {
+        return gson.toJson(object);
     }
 }

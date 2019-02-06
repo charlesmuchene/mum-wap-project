@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import model.Task;
 import model.User;
 import repository.UserRepository;
+import utility.Utilities;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,8 +30,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Collection<User> userList = repository.getAllUsers();
         String users = new Gson().toJson(userList);
         System.out.println(users);
@@ -40,6 +40,12 @@ public class UserServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         out.write(users);
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = Utilities.getJson(request, User.class);
+        repository.saveUser(user);
+        response.getWriter().print(Utilities.toJson(user));
     }
 }

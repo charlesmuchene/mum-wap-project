@@ -14,18 +14,17 @@ public class Task implements Model {
     private Date dueDate;
     @Enumerated(EnumType.STRING)
     private Category category;
-    @OneToOne(cascade = CascadeType.ALL)
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
     private int priority;
 
     public Task() {
     }
 
-    public Task(String name, Date dueDate, Category category, User user, int priority) {
+    public Task(String name, Date dueDate, Category category, int priority) {
         this.name = name;
         this.dueDate = dueDate;
         this.category = category;
-        this.user = user;
         this.priority = priority;
     }
 
@@ -71,19 +70,26 @@ public class Task implements Model {
         this.category = category;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public int getPriority() {
         return priority;
     }
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dueDate=" + dueDate +
+                ", category=" + category +
+                ", priority=" + priority +
+                '}';
     }
 }

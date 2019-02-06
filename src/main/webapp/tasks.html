@@ -44,7 +44,7 @@
 
             <div>
                 <label>Task</label> <input type="text" required="required"
-                                           name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                           name="name" class="large" placeholder="Breakfast at Tiffanys"
                                            maxlength="200"/>
             </div>
             <div>
@@ -54,14 +54,14 @@
                 <option value="2">second</option>
                 <option value="3">third</option>
                 <option value="4">fourth</option>
-                <option value="5">fivth</option>
+                <option value="5">fifth</option>
                 <option value="6">sixth</option>
             </select>
             </div>
 
             <div>
                 <label>Required by</label> <input type="date" required="required"
-                                                  name="requiredBy"/>
+                                                  name="dueDate"/>
             </div>
             <div>
                 <label>Category</label> <select name="category">
@@ -185,7 +185,7 @@
         .done(function (script, textStatus) {
             $(document).ready(function () {
                 tasksController.init($('#taskPage'), function () {
-                    tasksController.loadTasks();
+                    console.log("Aftermath");
                 });
             });
         })

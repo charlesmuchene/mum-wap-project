@@ -13,16 +13,17 @@ public class TestPersistence {
 
         Team team = new Team("Awesome");
         Location location = new Location(0.0, 201.0);
-        User user = new User("Charles", "email", "phone", location, new ArrayList<>(Collections.singletonList(team)));
-        Task task = new Task("Task", new Date(), Category.Unknown, user, 3);
+        User user = new User("Charles", "email", "phone", location);
+        Task task = new Task("Task", new Date(), Category.Unknown, 3);
 
         TaskRepository taskRepository = new TaskRepository();
         System.out.println(task.getName());
         taskRepository.saveTask(task);
         task = taskRepository.getTask(1);
         System.out.println(task.getName());
-        Collection<Task> allTasks = taskRepository.getAllTasks();
-        allTasks.forEach(task2 -> System.out.println(task2.getUser().getLocation().getLongitude()));
+
+        String s = Utilities.toJson(user);
+        System.out.println(s);
 
     }
 }

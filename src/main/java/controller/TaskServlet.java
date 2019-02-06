@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import model.Task;
 import repository.TaskRepository;
 import utility.Fetch;
 import utility.Pair;
@@ -22,6 +23,13 @@ public class TaskServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         repository = new TaskRepository();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Task task = Utilities.getJson(request, Task.class);
+        repository.saveTask(task);
+        response.getWriter().print(Utilities.toJson(task));
     }
 
     @Override

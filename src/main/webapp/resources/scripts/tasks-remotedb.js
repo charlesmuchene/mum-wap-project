@@ -19,14 +19,14 @@ storageEngine = function () {
             console.log('Init not required for remote db');
         },
 
-        initObjectStore: function(type, successCallback) {
+        initObjectStore: function (type, successCallback) {
             successCallback();
             console.log('InitObjectStore not required for remote db');
         },
 
         save: function (type, obj, successCallback, errorCallback) {
             const url = getStorageUrlOf(type);
-            $.post(url, {'data': obj})
+            $.post(url, obj)
                 .done(successCallback)
                 .fail(errorCallback);
         },
