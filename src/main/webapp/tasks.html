@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Task list</title>
-<link rel="stylesheet" type="text/css" href="resources/styles/tasks.css"	media="screen" />
-<script src="resources/scripts/jquery-2.0.3.js"></script>
-<script src="resources/scripts/jquery-tmpl.js"></script>
-<script src="resources/scripts/jquery.validate.js"></script>
-<script src="resources/scripts/jquery-serialization.js"></script>
-<script src="resources/scripts/tasks-controller.js"></script>
-<script src="resources/scripts/date.js"></script>
+    <meta charset="utf-8">
+    <title>Task list</title>
+    <link rel="stylesheet" type="text/css" href="resources/styles/tasks.css" media="screen"/>
+    <script src="resources/scripts/jquery-2.0.3.js"></script>
+    <script src="resources/scripts/jquery-tmpl.js"></script>
+    <script src="resources/scripts/jquery.validate.js"></script>
+    <script src="resources/scripts/jquery-serialization.js"></script>
+    <script src="resources/scripts/storage-types.js"></script>
+    <script src="resources/scripts/tasks-controller.js"></script>
+    <script src="resources/scripts/date.js"></script>
 </head>
 <body>
-	<header>
-		<span>Task list</span>
-	</header>
-	<main  id="taskPage">
-	<section id="taskCreation" class="not">
-		<div id="selectUserTable">
-			<table id="userTable">
-				<colgroup>
-					<col width="40">
-					<col width="40%">
-					<col width="20%">
+<header>
+    <span>Task list</span>
+</header>
+<main id="taskPage">
+    <section id="taskCreation" class="not">
+        <div id="selectUserTable">
+            <table id="userTable">
+                <colgroup>
+                    <col width="40">
+                    <col width="40%">
+                    <col width="20%">
 
-				</colgroup>
-				<thead>
-				<tr>
-					<th>First Name</th>
-					<th>Second Name</th>
-					<th>User ID</th>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Second Name</th>
+                    <th>User ID</th>
 
-				</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
 
-		<form id="taskForm">
-			<input type="hidden" name="id"/>
+        <form id="taskForm">
+            <input type="hidden" name="id"/>
 
             <div>
-				<label>Task</label> <input type="text" required="required"
-					name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
-			</div>
+                <label>Task</label> <input type="text" required="required"
+                                           name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                           maxlength="200"/>
+            </div>
             <div>
                 <label>Priority</label> <select name="priority">
                 <option value="None">None</option>
@@ -57,147 +59,139 @@
             </select>
             </div>
 
-			<div>
-				<label>Required by</label> <input type="date" required="required"
-					name="requiredBy" />
-			</div>
-			<div>
-				<label>Category</label> <select name="category">
-					<option value="Personal">Personal</option>
-					<option value="Work">Work</option>
-				</select>
-			</div>
+            <div>
+                <label>Required by</label> <input type="date" required="required"
+                                                  name="requiredBy"/>
+            </div>
+            <div>
+                <label>Category</label> <select name="category">
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+            </select>
+            </div>
 
 
-			<nav>
-				<a href="#" id="saveTask">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
-				<a href="#" id="clearTask">Clear task</a>
-			</nav>
+            <nav>
+                <a href="#" id="saveTask">Save task</a>
+                <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
+                <a href="#" id="clearTask">Clear task</a>
+            </nav>
 
-		</form>
+        </form>
 
-	</section>
-		<!-- add User -->
-		<section id="userCreation" class="not">
-		<form id="addUserForm">
-			<input type="hidden" name="id"/>
-			<div>
-				<label>First Name</label> <input type="text" required="required" name="userID"
-											  class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
-			</div>
-			<div>
-				<label>Last Name</label> <input type="text" required="required"
-										   name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
-			</div>
-			<div>
-				<label>Address </label> <input type="text" required="required"
-												name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
-			</div>
+    </section>
+    <!-- add User -->
+    <section id="userCreation" class="not">
+        <form id="addUserForm">
+            <input type="hidden" name="id"/>
+            <div>
+                <label>First Name</label> <input type="text" required="required" name="userID"
+                                                 class="large" placeholder="Breakfast at Tiffanys" maxlength="200"/>
+            </div>
+            <div>
+                <label>Last Name</label> <input type="text" required="required"
+                                                name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                                maxlength="200"/>
+            </div>
+            <div>
+                <label>Address </label> <input type="text" required="required"
+                                               name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                               maxlength="200"/>
+            </div>
 
-			<nav>
-				<a href="#" id="saveUser">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
-				<a href="#" id="clearUser">Clear task</a>
-			</nav>
+            <nav>
+                <a href="#" id="saveUser">Save task</a>
+                <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
+                <a href="#" id="clearUser">Clear task</a>
+            </nav>
 
-		</form>
+        </form>
 
-	</section>
+    </section>
 
-	<div class="teamWrapper not">
-		<div id="addTeam">
-			<a href="#" id="teamClose" class="close">x</a>
-			<h2>Add new team</h2>
-			<hr>
-			<form id="teamForm">
-				<div>
-					<label for="teamName">Team Name:</label> 
-					<input type="text" id="teamName" name="teamName" placeholder="Name" required="required" maxlength="50">
-				</div>
-				<nav>
-					<a href="#" id="saveTeam">Save</a>
-				</nav>
-			</form>
-		</div>
-	</div>
-	
-	<section>
+    <div class="teamWrapper not">
+        <div id="addTeam">
+            <a href="#" id="teamClose" class="close">x</a>
+            <h2>Add new team</h2>
+            <hr>
+            <form id="teamForm">
+                <div>
+                    <label for="teamName">Team Name:</label>
+                    <input type="text" id="teamName" name="teamName" placeholder="Name" required="required"
+                           maxlength="50">
+                </div>
+                <nav>
+                    <a href="#" id="saveTeam">Save</a>
+                </nav>
+            </form>
+        </div>
+    </div>
+
+    <section>
         <div>
-            <select name="sort" >
+            <select name="sort">
                 <option value="sortByPriority" id="priority">Sort By Priority</option>
                 <option value="sortByUserId">Sort By User Id</option>
             </select>
         </div>
-		<table id="tblTasks">
-			<colgroup>
+        <table id="tblTasks">
+            <colgroup>
 
-				<col width="40%">
-				<col width="10%">
-				<col width="10%">
-				<col width="10%">
+                <col width="40%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
 
-				<col width="10">
-				<col width="30%">
-				<col width="15%">
-				<col width="15%">
+                <col width="10">
+                <col width="30%">
+                <col width="15%">
+                <col width="15%">
 
-				<col width="30%">
-			</colgroup>
-			<thead>
-				<tr>
+                <col width="30%">
+            </colgroup>
+            <thead>
+            <tr>
 
-					<th>Name</th>
-                    <th>Priority</th>
+                <th>Name</th>
+                <th>Priority</th>
 
-					<th>User ID</th>
-					<th>Task</th>
+                <th>User ID</th>
+                <th>Task</th>
 
-					<th>Due</th>
-					<th>Category</th>
-                    <th>Actions</th>
+                <th>Due</th>
+                <th>Category</th>
+                <th>Actions</th>
 
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-		<nav>
-			<a href="#" id="btnAddTask">Add task</a>
-			<a href="#" id="btnRetrieveTasks">Retrieve tasks from server</a>
-			<a href="#" id="addUserButton">Add User</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
-			<a href="#" id="addTeamButton">Add Team</a>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <nav>
+            <a href="#" id="btnAddTask">Add task</a>
+            <a href="#" id="btnRetrieveTasks">Retrieve tasks from server</a>
+            <a href="#" id="addUserButton">Add User</a>
+            <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
+            <a href="#" id="addTeamButton">Add Team</a>
 
-		</nav>
-	</section>
-	</main>
-	<footer>You have <span id="taskCount"></span> tasks</footer>
+        </nav>
+    </section>
+</main>
+<footer>You have <span id="taskCount"></span> tasks</footer>
 </body>
 <script>
-function initScreen() {
-	$(document).ready(function() {
-		tasksController.init($('#taskPage'), function() {
-			tasksController.loadTasks();
-		});		
-	});
-}
-if (window.indexedDB) { 
-	console.log("using indexedDB 111917kl");
-	$.getScript( "resources/scripts/tasks-indexeddb.js" )
-	.done(function( script, textStatus ) {
-		initScreen();
-	})
-	.fail(function( jqxhr, settings, exception ) {
-		console.log( 'Failed to load indexed db script' );
-	});
-} else if (window.localStorage) {
-	console.log("using webstorage 111917kl");
-	$.getScript( "resources/scripts/tasks-webstorage.js" )
-	.done(function( script, textStatus ) {
-		initScreen();
-	})
-	.fail(function( jqxhr, settings, exception ) {
-		console.log( 'Failed to load web storage script' );
-	});
-}
+    console.log("using remote storage");
+    $.getScript("resources/scripts/tasks-remotedb.js")
+        .done(function (script, textStatus) {
+            $(document).ready(function () {
+                tasksController.init($('#taskPage'), function () {
+                    tasksController.loadTasks();
+                });
+            });
+        })
+        .fail(function (jqxhr, settings, exception) {
+            console.log('Failed to load remote db script');
+        });
 </script>
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
@@ -206,7 +200,7 @@ if (window.indexedDB) {
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
 	<td>{{if complete == true}}class="taskCompleted"{{/if}} ${priority}</td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
-	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${dueDate}</time></td>
      <td>
 		<nav>
 			{{if complete != true}}
@@ -217,6 +211,11 @@ if (window.indexedDB) {
 		</nav>
 	</td>
 </tr>
+
+
+
+
+
 </script>
 
 
