@@ -9,7 +9,7 @@ public class Task  implements Model {
     @Id
     @GeneratedValue
     private int id;
-    private String task;
+    private String name;
     @Column(name = "due_date")
     private Date dueDate;
     @Enumerated(EnumType.STRING)
@@ -20,8 +20,8 @@ public class Task  implements Model {
     public Task() {
     }
 
-    public Task(String task, Date dueDate, Category category, User user) {
-        this.task = task;
+    public Task(String name, Date dueDate, Category category, User user) {
+        this.name = name;
         this.dueDate = dueDate;
         this.category = category;
         this.user = user;
@@ -35,12 +35,12 @@ public class Task  implements Model {
         this.id = id;
     }
 
-    public String getTask() {
-        return task;
+    public String getName() {
+        return name;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getDueDate() {

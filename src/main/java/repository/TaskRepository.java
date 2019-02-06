@@ -12,8 +12,13 @@ import java.util.Collection;
  */
 public class TaskRepository implements Repository {
 
-    Collection<Task> getAllTasks() {
-        return null;
+    /**
+     * Get all tasks
+     *
+     * @return {@link Collection} of all tasks
+     */
+    public Collection<Task> getAllTasks() {
+        return retrieveAll(Task.class);
     }
 
     /**
@@ -22,8 +27,12 @@ public class TaskRepository implements Repository {
      * @param id Task id to retrieve
      * @return {@link Task} instance
      */
-    Task getTask(int id) {
+    public Task getTask(int id) {
         return retrieve(Task.class, id);
+    }
+
+    public void saveTask(Task task) {
+        persist(task);
     }
 
 }

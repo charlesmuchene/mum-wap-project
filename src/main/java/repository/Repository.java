@@ -5,12 +5,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Base repository contract
  */
 public interface Repository {
+
+    SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
     /**
      * Persist the given model
@@ -33,13 +38,29 @@ public interface Repository {
     }
 
     /**
+     * Retrieve all
+     *
+     * @param klass Class of model
+     * @return {@link List} of {@link T}
+     */
+    @SuppressWarnings("unchecked")
+    default <T> List<T> retrieveAll(Class<T> klass) {
+        List<?> list = performTask(session -> {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(klass);
+            criteriaQuery.from(klass);
+            return session.createQuery(criteriaQuery).getResultList();
+        });
+        return (List<T>) list;
+    }
+
+    /**
      * Perform the given task
      *
      * @param task {@link model.Task} to perform
      * @return {@link T} instance
      */
     default <T> T performTask(PersistenceTask<T> task) {
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
         session.beginTransaction();
         T result = task.perform(session);
