@@ -1,11 +1,19 @@
 package utility;
 
 import com.google.gson.Gson;
+import model.*;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utilities class
@@ -15,8 +23,55 @@ import java.io.PrintWriter;
 public class Utilities {
 
     private static Gson gson = new Gson();
+    private static SessionFactory sessionFactory;
 
     private Utilities() {
+    }
+
+    /**
+     * Get session Factory
+     *
+     * @return {@link SessionFactory} instance
+     */
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            Configuration configuration = new Configuration().configure();
+            configuration.addAnnotatedClass(Team.class);
+            configuration.addAnnotatedClass(Task.class);
+            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Location.class);
+            configuration.addAnnotatedClass(Category.class);
+
+            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties());
+            /* Comment out if running locally */
+            try {
+                String databaseUrl = System.getenv("DATABASE_URL");
+                if (databaseUrl == null)
+                    /* Url to use locally */
+                    databaseUrl = "postgres://climate:climate@localhost:5432/wapproject";
+                URI dbUri = new URI(databaseUrl);
+                String username = dbUri.getUserInfo().split(":")[0];
+                String password = dbUri.getUserInfo().split(":")[1];
+                String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+                Map<String, String> settings = new HashMap<>();
+                settings.put("hibernate.connection.username", username);
+                settings.put("hibernate.connection.password", password);
+                settings.put("hibernate.connection.url", dbUrl);
+
+                builder.applySettings(settings);
+                System.out.println(settings);
+
+            } catch (URISyntaxException exception) {
+                throw new IllegalArgumentException("Malformed database url");
+            }
+
+            sessionFactory = configuration.buildSessionFactory(builder.build());
+
+        }
+
+        return sessionFactory;
     }
 
     /**

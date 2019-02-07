@@ -82,19 +82,33 @@ tasksController = function () {
 	var initialised = false;
 
 	/**
+	 * Show loader
+	 */
+	function showLoader() {
+		$(taskPage).find('.loadingWrapper').removeClass('not');
+	}
+
+	/**
+	 * Hide loader
+	 */
+	function hideLoader() {
+		$(taskPage).find('.loadingWrapper').addClass('not');
+	}
+
+	/**
 	 * makes json call to server to get task list.
 	 * currently just testing this and writing return value out to console
 	 * 111917kl
 	 */
 	function retrieveTasksServer() {
+		showLoader();
 		$.ajax("TaskServlet", {
 			"type": "get",
 			dataType: "json"
-			// "data": {
-			//     "first": first,
-			//     "last": last
-			// }
-		}).done(displayTasksServer.bind()); //need reference to the tasksController object
+		}).done(displayTasksServer.bind()) //need reference to the tasksController object
+			.fail(function () {
+				hideLoader();
+			})
 	}
 
 	/**
@@ -104,7 +118,6 @@ tasksController = function () {
 	 */
 	function displayTasksServer(data) {
 		//this needs to be bound to the tasksController -- used bind in retrieveTasksServer 111917kl
-		console.log(data);
 		tasksController.loadServerTasks(data);
 	}
 
@@ -165,7 +178,7 @@ tasksController = function () {
 				/**     * 11/19/17kl        */
 				$(taskPage).find('#btnRetrieveTasks').click(function (evt) {
 					evt.preventDefault();
-					console.log('making ajax call');
+					console.log('Making ajax call to retrieve tasks from server');
 					retrieveTasksServer();
 				});
 
@@ -211,15 +224,18 @@ tasksController = function () {
 					evt.preventDefault();
 					const taskForm = $(taskPage).find('#taskForm');
 					if (taskForm.valid()) {
+						showLoader();
 						var task = taskForm.toObject();
-						console.log("The old task is ", task);
 						storageEngine.save('task', task, function () {
-							console.log("The new task is ", task);
 							$(taskPage).find('#tblTasks tbody').empty();
 							tasksController.loadTasks();
 							clearTask();
 							$(taskPage).find('#taskCreation').addClass('not');
-						}, errorLogger);
+							hideLoader();
+						}, function (errorCode, errorMessage) {
+							hideLoader();
+							errorLogger(errorCode, errorMessage)
+						});
 					}
 				});
 
@@ -275,9 +291,10 @@ tasksController = function () {
 				}
 				$('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
 				taskCountChanged();
-				console.log('about to render table with server tasks');
 				//renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
 			});
+			console.log('Rendered table with server tasks');
+			hideLoader();
 		},
 		loadTasks: function () {
 			$(taskPage).find('#tblTasks tbody').empty();
