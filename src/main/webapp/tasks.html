@@ -52,18 +52,18 @@
             <div>
                 <label>Priority</label>
                 <select name="priority">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
                 </select>
             </div>
 
             <div>
                 <label>Required by</label> <input type="date" required="required"
-                                                  name="dueDate" />
+                                                  name="dueDate"/>
             </div>
 
             <div>
@@ -75,8 +75,16 @@
             </div>
 
             <!--TODO For now, but remember to delete-->
-            <input type="hidden" name="userId" value="-2"/>
-            
+            <div>
+                <label>UserId <em>(dummy users)</em></label>
+                <select name="userId">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
             <nav>
                 <a href="#" id="saveTask">Save task</a>
                 <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
@@ -175,7 +183,7 @@
 		.done(function (script, textStatus) {
 			$(document).ready(function () {
 				tasksController.init($('#taskPage'), function () {
-					console.log("Aftermath");
+					console.log("Empty callback after initialization");
 				});
 			});
 		})
@@ -202,6 +210,7 @@
         </nav>
     </td>
 </tr>
+
 
 
 </script>

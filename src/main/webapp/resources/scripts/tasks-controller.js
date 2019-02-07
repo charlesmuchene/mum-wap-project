@@ -104,7 +104,6 @@ tasksController = function () {
 	 */
 	function displayTasksServer(data) {
 		//this needs to be bound to the tasksController -- used bind in retrieveTasksServer 111917kl
-		console.log(data);
 		tasksController.loadServerTasks(data);
 	}
 
@@ -212,9 +211,7 @@ tasksController = function () {
 					const taskForm = $(taskPage).find('#taskForm');
 					if (taskForm.valid()) {
 						var task = taskForm.toObject();
-						console.log("The old task is ", task);
 						storageEngine.save('task', task, function () {
-							console.log("The new task is ", task);
 							$(taskPage).find('#tblTasks tbody').empty();
 							tasksController.loadTasks();
 							clearTask();
@@ -275,7 +272,7 @@ tasksController = function () {
 				}
 				$('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
 				taskCountChanged();
-				console.log('about to render table with server tasks');
+				console.log('Rendering table with server tasks');
 				//renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
 			});
 		},

@@ -2,8 +2,7 @@ package repository;
 
 import model.Model;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import utility.Utilities;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,8 +13,6 @@ import java.util.List;
  * Base repository contract
  */
 public interface Repository {
-
-    SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
     /**
      * Persist the given model
@@ -61,7 +58,7 @@ public interface Repository {
      * @return {@link T} instance
      */
     default <T> T performTask(PersistenceTask<T> task) {
-        Session session = factory.openSession();
+        Session session = Utilities.getSessionFactory().openSession();
         session.beginTransaction();
         T result = task.perform(session);
         session.getTransaction().commit();
