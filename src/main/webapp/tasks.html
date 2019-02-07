@@ -200,47 +200,19 @@
 <footer>You have <span id="taskCount"></span> tasks</footer>
 </body>
 <script>
-    /* Uncomment to save on the server db */
-    // console.log("using remote storage");
-    // $.getScript("resources/scripts/tasks-remotedb.js")
-    //     .done(function (script, textStatus) {
-    //         $(document).ready(function () {
-    //             tasksController.init($('#taskPage'), function () {
-    //                 console.log("Aftermath");
-    //             });
-    //         });
-    //     })
-    //     .fail(function (jqxhr, settings, exception) {
-    //         console.log('Failed to load remote db script');
-    //     });
+	console.log("using remote storage");
+	$.getScript("resources/scripts/tasks-remotedb.js")
+		.done(function (script, textStatus) {
+			$(document).ready(function () {
+				tasksController.init($('#taskPage'), function () {
+					console.log("Aftermath");
+				});
+			});
+		})
+		.fail(function (jqxhr, settings, exception) {
+			console.log('Failed to load remote db script');
+		});
 
-    function initScreen() {
-        $(document).ready(function () {
-            tasksController.init($('#taskPage'), function () {
-                tasksController.loadTasks();
-            });
-        });
-    }
-
-    if (window.indexedDB) {
-        console.log("using indexedDB 111917kl");
-        $.getScript("resources/scripts/tasks-indexeddb.js")
-            .done(function (script, textStatus) {
-                initScreen();
-            })
-            .fail(function (jqxhr, settings, exception) {
-                console.log('Failed to load indexed db script');
-            });
-    } else if (window.localStorage) {
-        console.log("using webstorage 111917kl");
-        $.getScript("resources/scripts/tasks-webstorage.js")
-            .done(function (script, textStatus) {
-                initScreen();
-            })
-            .fail(function (jqxhr, settings, exception) {
-                console.log('Failed to load web storage script');
-            });
-    }
 </script>
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
@@ -260,6 +232,7 @@
         </nav>
     </td>
 </tr>
+
 
 </script>
 </html>
