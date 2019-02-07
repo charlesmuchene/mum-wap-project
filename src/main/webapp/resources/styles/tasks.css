@@ -9,6 +9,19 @@ body, h1, h2, h3, h4, h5, h6, p, ul, dl, ol, form, fieldset, input, label, table
 	margin: 0;
 	font-size: 12px;
 }
+#displayUse  {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	position: fixed;
+	background-color: #000000aa;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	font-size: 30px;
+}
 
 header {
 	width:100%;
@@ -19,6 +32,10 @@ header {
 	font-size: 20px;
 	text-align:center;
 	line-height: 80px;
+}
+#sort{
+	color: blue;
+	font-weight: bold;
 }
 
 footer {

@@ -1,46 +1,81 @@
-$(function () {
-	$("#priority").on('click', sortTable);
-});
-
-function sortTable() {
-	var table, rows, switching, i, x, y, shouldSwitch;
-	table = document.getElementById("tblTasks");
-	switching = true;
-	/*Make a loop that will continue until
-	no switching has been done:*/
-	while (switching) {
-		//start by saying: no switching is done:
-		switching = false;
-		rows = table.rows;
-		/*Loop through all table rows (except the
-		first, which contains table headers):*/
-		for (i = 1; i < (rows.length - 1); i++) {
-			//start by saying there should be no switching:
-			shouldSwitch = false;
-			/*Get the two elements you want to compare,
-			one from current row and one from the next:*/
-			x = rows[i].getElementsByTagName("TD")[2];
-			y = rows[i + 1].getElementsByTagName("TD")[2];
-			//check if the two rows should switch place:
-			if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-				//if so, mark as a switch and break the loop:
-				shouldSwitch = true;
-				break;
-			}
-		}
-		if (shouldSwitch) {
-			/*If a switch has been marked, make the switch
-			and mark that a switch has been done:*/
-			rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-			switching = true;
-		}
-	}
-}
-
 tasksController = function () {
 
 	function errorLogger(errorCode, errorMessage) {
 		console.log(errorCode + ':' + errorMessage);
+	}
+
+	// Sort by priority
+
+	function sortTablePriority() {
+		var table, rows, switching, i, x, y, shouldSwitch;
+		table = document.getElementById("tblTasks");
+		switching = true;
+		/*Make a loop that will continue until
+		no switching has been done:*/
+		while (switching) {
+			//start by saying: no switching is done:
+			switching = false;
+			rows = table.rows;
+			/*Loop through all table rows (except the
+			first, which contains table headers):*/
+			for (i = 1; i < (rows.length - 1); i++) {
+				//start by saying there should be no switching:
+				shouldSwitch = false;
+				/*Get the two elements you want to compare,
+				one from current row and one from the next:*/
+				x = rows[i].getElementsByTagName("TD")[2];
+				y = rows[i + 1].getElementsByTagName("TD")[2];
+				//check if the two rows should switch place:
+				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+					//if so, mark as a switch and break the loop:
+					shouldSwitch = true;
+					break;
+				}
+			}
+			if (shouldSwitch) {
+				/*If a switch has been marked, make the switch
+				and mark that a switch has been done:*/
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+			}
+		}
+	}
+
+	// sort table by ID
+
+	function sortTableByID() {
+		var table, rows, switching, i, x, y, shouldSwitch;
+		table = document.getElementById("tblTasks");
+		switching = true;
+		/*Make a loop that will continue until
+		no switching has been done:*/
+		while (switching) {
+			//start by saying: no switching is done:
+			switching = false;
+			rows = table.rows;
+			/*Loop through all table rows (except the
+			first, which contains table headers):*/
+			for (i = 1; i < (rows.length - 1); i++) {
+				//start by saying there should be no switching:
+				shouldSwitch = false;
+				/*Get the two elements you want to compare,
+				one from current row and one from the next:*/
+				x = rows[i].getElementsByTagName("TD")[0];
+				y = rows[i + 1].getElementsByTagName("TD")[0];
+				//check if the two rows should switch place:
+				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+					//if so, mark as a switch and break the loop:
+					shouldSwitch = true;
+					break;
+				}
+			}
+			if (shouldSwitch) {
+				/*If a switch has been marked, make the switch
+				and mark that a switch has been done:*/
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+			}
+		}
 	}
 
 	var taskPage;
@@ -52,8 +87,14 @@ tasksController = function () {
 	 * 111917kl
 	 */
 	function retrieveTasksServer() {
-		$.get('TaskServlet')
-			.done(displayTasksServer.bind());
+		$.ajax("TaskServlet", {
+			"type": "get",
+			dataType: "json"
+			// "data": {
+			//     "first": first,
+			//     "last": last
+			// }
+		}).done(displayTasksServer.bind()); //need reference to the tasksController object
 	}
 
 	/**
@@ -61,7 +102,8 @@ tasksController = function () {
 	 * callback for retrieveTasksServer
 	 * @param data
 	 */
-	function displayTasksServer(data) { //this needs to be bound to the tasksController -- used bind in retrieveTasksServer 111917kl
+	function displayTasksServer(data) {
+		//this needs to be bound to the tasksController -- used bind in retrieveTasksServer 111917kl
 		console.log(data);
 		tasksController.loadServerTasks(data);
 	}
@@ -104,6 +146,7 @@ tasksController = function () {
 					evt.preventDefault();
 					$(taskPage).find('#taskCreation').removeClass('not');
 				});
+
 				$(taskPage).find('#addTeamButton').click(function (evt) {
 					evt.preventDefault();
 					$(taskPage).find('.teamWrapper').removeClass('not');
@@ -176,6 +219,7 @@ tasksController = function () {
 						}, errorLogger);
 					}
 				});
+
 				$(taskPage).find('#teamClose').click(function (evt) {
 					evt.preventDefault();
 					$(taskPage).find('.teamWrapper').addClass('not');
@@ -209,6 +253,13 @@ tasksController = function () {
 					}
 				});
 
+				/* Sort tasks */
+				$("#saveUser").click(function() {
+					console.log("Save user to the server");
+				});
+				$("#sortID").on('click', sortTableByID);
+				$("#sortpriority").on('click', sortTablePriority);
+
 				initialised = true;
 			}
 		},
@@ -227,28 +278,26 @@ tasksController = function () {
 				console.log('about to render table with server tasks');
 				//renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
 			});
+		},
+		loadTasks: function () {
+			$(taskPage).find('#tblTasks tbody').empty();
+			storageEngine.findAll('task', function (tasks) {
+				tasks.sort(function (o1, o2) {
+					return Date.parse(o1.requiredBy).compareTo(Date.parse(o2.requiredBy));
+				});
+
+				$.each(tasks, function (index, task) {
+					if (!task.complete) {
+						task.complete = false;
+					}
+					$('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
+					taskCountChanged();
+					renderTable();
+				});
+			}, errorLogger);
 		}
 
-		,
-		loadTasks:
-
-			function () {
-				$(taskPage).find('#tblTasks tbody').empty();
-				storageEngine.findAll('task', function (tasks) {
-					tasks.sort(function (o1, o2) {
-						return Date.parse(o1.requiredBy).compareTo(Date.parse(o2.requiredBy));
-					});
-
-					$.each(tasks, function (index, task) {
-						if (!task.complete) {
-							task.complete = false;
-						}
-						$('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
-						taskCountChanged();
-						renderTable();
-					});
-				}, errorLogger);
-			}
 	}
+
 
 }();

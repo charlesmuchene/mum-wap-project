@@ -14,6 +14,9 @@
 </head>
 <body>
 <header>
+    <h3 id="h1d "></h3>
+    <h3 id="h2d"></h3>
+    <h3 id="h3d"></h3>
     <span>Task list</span>
 </header>
 <main id="taskPage">
@@ -30,7 +33,7 @@
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
-                    <th>User ID</th>
+                    <th>Address</th>
 
                 </tr>
                 </thead>
@@ -41,6 +44,11 @@
 
         <form id="taskForm">
             <input type="hidden" name="id"/>
+            <div>
+                <label>UserId</label> <input type="number" required="required" id="userIDD"
+                                             name="userId" class="large" placeholder="Enter UserId"
+                                             maxlength="200"/>
+            </div>
             <div>
                 <label>Task</label> <input type="text" required="required"
                                            name="task" class="large" placeholder="Breakfast at Tiffanys"
@@ -127,6 +135,7 @@
                 </div>
                 <nav>
                     <a href="#" id="saveUser">Save</a>
+
                 </nav>
             </form>
         </div>
@@ -163,16 +172,19 @@
 
     <section>
         <div>
-            <input type="submit" id="priority" value="select by Priority">
+            <h1 id="sort">Sort </h1>
+            <input type="submit" value="SortById" id="sortID">
+            <input type="Submit" value="SortByPriority" id="sortpriority">
         </div>
         <table id="tblTasks">
             <colgroup>
-                <col width="10">
-                <col width="30%">
+                <col width="5%">
+                <col width="10%">
+                <col width="5%">
                 <col width="10%">
                 <col width="10%">
                 <col width="10%">
-                <col width="30%">
+                <col width="50%">
             </colgroup>
             <thead>
             <tr>
