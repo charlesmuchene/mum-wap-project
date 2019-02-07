@@ -8,6 +8,7 @@
     <script src="resources/scripts/jquery-tmpl.js"></script>
     <script src="resources/scripts/jquery.validate.js"></script>
     <script src="resources/scripts/jquery-serialization.js"></script>
+    <script src="resources/scripts/storage-types.js"></script>
     <script src="resources/scripts/tasks-controller.js"></script>
     <script src="resources/scripts/date.js"></script>
 </head>
@@ -20,7 +21,7 @@
 </header>
 <main id="taskPage">
     <section id="taskCreation" class="not">
-        <!--<div id="selectUserTable">
+        <div id="selectUserTable">
             <table id="userTable">
                 <colgroup>
                     <col width="40">
@@ -39,48 +40,43 @@
                 <tbody>
                 </tbody>
             </table>
-        </div>-->
-<div id="displayUse">
-  <p id="p1"></p>
-    <p id="p2"></p>
-    <p id="p3"></p>
-
-</div>
+        </div>
 
         <form id="taskForm">
-            <input type="hidden" name="id"/>
-            <div>
-            <label>UserId</label> <input type="number" required="required" id="userIDD"
-                                       name="userId" class="large" placeholder="Enter UserId"
-                                       maxlength="200"/>
-            </div>
+            <input type="hidden" name="id" value="-1"/>
             <div>
                 <label>Task</label> <input type="text" required="required"
-                                           name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                           name="name" class="large" placeholder="Breakfast at Tiffanys"
                                            maxlength="200"/>
             </div>
             <div>
                 <label>Priority</label>
                 <select name="priority">
-                    <option value="None">None</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
                 </select>
             </div>
+
             <div>
                 <label>Required by</label> <input type="date" required="required"
-                                                  name="requiredBy"/>
+                                                  name="dueDate" />
             </div>
+
             <div>
-                <label>Category</label> <select name="category">
-                <option value="Personal">Personal</option>
-                <option value="Work">Work</option>
-            </select>
+                <label>Category</label>
+                <select name="category">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                </select>
             </div>
+
+            <!--TODO For now, but remember to delete-->
+            <input type="hidden" name="userId" value="-2"/>
+            
             <nav>
                 <a href="#" id="saveTask">Save task</a>
                 <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
@@ -90,7 +86,6 @@
         </form>
 
     </section>
-
 
     <div class="teamWrapper not">
         <div id="addTeam">
@@ -128,7 +123,6 @@
                 </div>
                 <nav>
                     <a href="#" id="saveUser">Save</a>
-
                 </nav>
             </form>
         </div>
@@ -136,9 +130,9 @@
 
     <section>
         <div>
-          <h1 id="sort">Sort </h1>
-            <input  type="submit" value="SortById" id="sortID" >
-            <input type="Submit"  value="SortByPriority" id="sortpriority" >
+            <h1 id="sort">Sort </h1>
+            <input type="submit" value="SortById" id="sortID">
+            <input type="Submit" value="SortByPriority" id="sortpriority">
         </div>
         <table id="tblTasks">
             <colgroup>
@@ -176,40 +170,27 @@
 <footer>You have <span id="taskCount"></span> tasks</footer>
 </body>
 <script>
-    function initScreen() {
-        $(document).ready(function () {
-            tasksController.init($('#taskPage'), function () {
-                tasksController.loadTasks();
-            });
-        });
-    }
-    if (window.indexedDB) {
-        console.log("using indexedDB 111917kl");
-        $.getScript("resources/scripts/tasks-indexeddb.js")
-            .done(function (script, textStatus) {
-                initScreen();
-            })
-            .fail(function (jqxhr, settings, exception) {
-                console.log('Failed to load indexed db script');
-            });
-    } else if (window.localStorage) {
-        console.log("using webstorage 111917kl");
-        $.getScript("resources/scripts/tasks-webstorage.js")
-            .done(function (script, textStatus) {
-                initScreen();
-            })
-            .fail(function (jqxhr, settings, exception) {
-                console.log('Failed to load web storage script');
-            });
-    }
+	console.log("using remote storage");
+	$.getScript("resources/scripts/tasks-remotedb.js")
+		.done(function (script, textStatus) {
+			$(document).ready(function () {
+				tasksController.init($('#taskPage'), function () {
+					console.log("Aftermath");
+				});
+			});
+		})
+		.fail(function (jqxhr, settings, exception) {
+			console.log('Failed to load remote db script');
+		});
+
 </script>
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
 <tr>
     <td {{if complete == true}}class="taskCompleted"{{/if}}>${userId}</td>
-    <td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${name}</td>
     <td>{{if complete == true}}class="taskCompleted"{{/if}}${priority}</td>
-    <td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${dueDate}">${dueDate}</time></td>
     <td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
     <td>
         <nav>
@@ -221,5 +202,7 @@
         </nav>
     </td>
 </tr>
+
+
 </script>
 </html>
