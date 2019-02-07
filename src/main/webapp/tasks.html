@@ -29,7 +29,7 @@
                 <thead>
                 <tr>
                     <th>First Name</th>
-                    <th>Second Name</th>
+                    <th>Last Name</th>
                     <th>User ID</th>
 
                 </tr>
@@ -41,7 +41,23 @@
 
         <form id="taskForm">
             <input type="hidden" name="id"/>
+            <div>
+                <label>Task</label> <input type="text" required="required"
+                                           name="task" class="large" placeholder="Breakfast at Tiffanys"
+                                           maxlength="200"/>
+            </div>
+            <div>
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="None">None</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
 
+                </select>
+            </div>
             <div>
                 <label>Task</label> <input type="text" required="required"
                                            name="name" class="large" placeholder="Breakfast at Tiffanys"
@@ -50,27 +66,21 @@
             <div>
                 <label>Priority</label> <select name="priority">
                 <option value="None">None</option>
-                <option value="1">first</option>
-                <option value="2">second</option>
-                <option value="3">third</option>
-                <option value="4">fourth</option>
-                <option value="5">fifth</option>
-                <option value="6">sixth</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
             </select>
             </div>
-
             <div>
-                <label>Required by</label> <input type="date" required="required"
-                                                  name="dueDate"/>
+                <label>Category</label>
+                <select name="category">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                </select>
             </div>
-            <div>
-                <label>Category</label> <select name="category">
-                <option value="Personal">Personal</option>
-                <option value="Work">Work</option>
-            </select>
-            </div>
-
-
             <nav>
                 <a href="#" id="saveTask">Save task</a>
                 <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
@@ -80,6 +90,48 @@
         </form>
 
     </section>
+
+    <div class="teamWrapper not">
+        <div id="addTeam">
+            <a href="#" id="teamClose" class="close">x</a>
+            <h2>Add new team</h2>
+            <hr>
+            <form id="teamForm">
+                <div>
+                    <label for="teamName">Team Name:</label>
+                    <input type="text" id="teamName" name="teamName" placeholder="Name" required="required"
+                           maxlength="50">
+                </div>
+                <nav>
+                    <a href="#" id="saveTeam">Save</a>
+                </nav>
+            </form>
+        </div>
+    </div>
+    <div class="userWrapper not">
+        <div id="addUser">
+            <a href="#" id="userClose" class="close">x</a>
+            <h2>Add new user</h2>
+            <hr>
+            <form id="userForm">
+                <div>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" placeholder=" FirstName" required="required"
+                           maxlength="50">
+                    <label for="firstName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" required="required"
+                           maxlength="50">
+                    <label for="firstName">Address:</label>
+                    <input type="text" id="address" name="address" placeholder="Address" required="required"
+                           maxlength="50">
+                </div>
+                <nav>
+                    <a href="#" id="saveUser">Save</a>
+                </nav>
+            </form>
+        </div>
+    </div>
+
     <!-- add User -->
     <section id="userCreation" class="not">
         <form id="addUserForm">
@@ -109,59 +161,27 @@
 
     </section>
 
-    <div class="teamWrapper not">
-        <div id="addTeam">
-            <a href="#" id="teamClose" class="close">x</a>
-            <h2>Add new team</h2>
-            <hr>
-            <form id="teamForm">
-                <div>
-                    <label for="teamName">Team Name:</label>
-                    <input type="text" id="teamName" name="teamName" placeholder="Name" required="required"
-                           maxlength="50">
-                </div>
-                <nav>
-                    <a href="#" id="saveTeam">Save</a>
-                </nav>
-            </form>
-        </div>
-    </div>
-
     <section>
         <div>
-            <select name="sort">
-                <option value="sortByPriority" id="priority">Sort By Priority</option>
-                <option value="sortByUserId">Sort By User Id</option>
-            </select>
+            <input type="submit" id="priority" value="select by Priority">
         </div>
         <table id="tblTasks">
             <colgroup>
-
-                <col width="40%">
-                <col width="10%">
-                <col width="10%">
-                <col width="10%">
-
                 <col width="10">
                 <col width="30%">
-                <col width="15%">
-                <col width="15%">
-
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
                 <col width="30%">
             </colgroup>
             <thead>
             <tr>
-
-                <th>Name</th>
-                <th>Priority</th>
-
                 <th>User ID</th>
                 <th>Task</th>
-
+                <th>Priority</th>
                 <th>Due</th>
                 <th>Category</th>
                 <th>Actions</th>
-
             </tr>
             </thead>
             <tbody>
@@ -180,44 +200,66 @@
 <footer>You have <span id="taskCount"></span> tasks</footer>
 </body>
 <script>
-    console.log("using remote storage");
-    $.getScript("resources/scripts/tasks-remotedb.js")
-        .done(function (script, textStatus) {
-            $(document).ready(function () {
-                tasksController.init($('#taskPage'), function () {
-                    console.log("Aftermath");
-                });
+    /* Uncomment to save on the server db */
+    // console.log("using remote storage");
+    // $.getScript("resources/scripts/tasks-remotedb.js")
+    //     .done(function (script, textStatus) {
+    //         $(document).ready(function () {
+    //             tasksController.init($('#taskPage'), function () {
+    //                 console.log("Aftermath");
+    //             });
+    //         });
+    //     })
+    //     .fail(function (jqxhr, settings, exception) {
+    //         console.log('Failed to load remote db script');
+    //     });
+
+    function initScreen() {
+        $(document).ready(function () {
+            tasksController.init($('#taskPage'), function () {
+                tasksController.loadTasks();
             });
-        })
-        .fail(function (jqxhr, settings, exception) {
-            console.log('Failed to load remote db script');
         });
+    }
+
+    if (window.indexedDB) {
+        console.log("using indexedDB 111917kl");
+        $.getScript("resources/scripts/tasks-indexeddb.js")
+            .done(function (script, textStatus) {
+                initScreen();
+            })
+            .fail(function (jqxhr, settings, exception) {
+                console.log('Failed to load indexed db script');
+            });
+    } else if (window.localStorage) {
+        console.log("using webstorage 111917kl");
+        $.getScript("resources/scripts/tasks-webstorage.js")
+            .done(function (script, textStatus) {
+                initScreen();
+            })
+            .fail(function (jqxhr, settings, exception) {
+                console.log('Failed to load web storage script');
+            });
+    }
 </script>
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
 <tr>
-    <td {{if complete == true}}class="taskCompleted"{{/if}}>${userID}</td>
-	<td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
-	<td>{{if complete == true}}class="taskCompleted"{{/if}} ${priority}</td>
-	<td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
-	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${dueDate}</time></td>
-     <td>
-		<nav>
-			{{if complete != true}}
-				<a href="#" class="editRow" data-task-id="${id}">Edit</a>
-				<a href="#" class="completeRow" data-task-id="${id}">Complete</a>
-			{{/if}}
-			<a href="#" class="deleteRow" data-task-id="${id}">Delete</a>
-		</nav>
-	</td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${userId}</td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
+    <td>{{if complete == true}}class="taskCompleted"{{/if}}${priority}</td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
+    <td>
+        <nav>
+            {{if complete != true}}
+            <a href="#" class="editRow" data-task-id="${id}">Edit</a>
+            <a href="#" class="completeRow" data-task-id="${id}">Complete</a>
+            {{/if}}
+            <a href="#" class="deleteRow" data-task-id="${id}">Delete</a>
+        </nav>
+    </td>
 </tr>
 
-
-
-
-
 </script>
-
-
 </html>
-
