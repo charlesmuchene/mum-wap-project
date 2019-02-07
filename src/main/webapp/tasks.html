@@ -43,45 +43,29 @@
         </div>
 
         <form id="taskForm">
-            <input type="hidden" name="id"/>
-            <div>
-                <label>UserId</label> <input type="number" required="required" id="userIDD"
-                                             name="userId" class="large" placeholder="Enter UserId"
-                                             maxlength="200"/>
-            </div>
-            <div>
-                <label>Task</label> <input type="text" required="required"
-                                           name="task" class="large" placeholder="Breakfast at Tiffanys"
-                                           maxlength="200"/>
-            </div>
-            <div>
-                <label>Priority</label>
-                <select name="priority">
-                    <option value="None">None</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-
-                </select>
-            </div>
+            <input type="hidden" name="id" value="-1"/>
             <div>
                 <label>Task</label> <input type="text" required="required"
                                            name="name" class="large" placeholder="Breakfast at Tiffanys"
                                            maxlength="200"/>
             </div>
             <div>
-                <label>Priority</label> <select name="priority">
-                <option value="None">None</option>
+                <label>Priority</label>
+                <select name="priority">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
-            </select>
+                </select>
             </div>
+
+            <div>
+                <label>Required by</label> <input type="date" required="required"
+                                                  name="dueDate" />
+            </div>
+
             <div>
                 <label>Category</label>
                 <select name="category">
@@ -89,6 +73,10 @@
                     <option value="Work">Work</option>
                 </select>
             </div>
+
+            <!--TODO For now, but remember to delete-->
+            <input type="hidden" name="userId" value="-2"/>
+            
             <nav>
                 <a href="#" id="saveTask">Save task</a>
                 <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
@@ -135,40 +123,10 @@
                 </div>
                 <nav>
                     <a href="#" id="saveUser">Save</a>
-
                 </nav>
             </form>
         </div>
     </div>
-
-    <!-- add User -->
-    <section id="userCreation" class="not">
-        <form id="addUserForm">
-            <input type="hidden" name="id"/>
-            <div>
-                <label>First Name</label> <input type="text" required="required" name="userID"
-                                                 class="large" placeholder="Breakfast at Tiffanys" maxlength="200"/>
-            </div>
-            <div>
-                <label>Last Name</label> <input type="text" required="required"
-                                                name="task" class="large" placeholder="Breakfast at Tiffanys"
-                                                maxlength="200"/>
-            </div>
-            <div>
-                <label>Address </label> <input type="text" required="required"
-                                               name="task" class="large" placeholder="Breakfast at Tiffanys"
-                                               maxlength="200"/>
-            </div>
-
-            <nav>
-                <a href="#" id="saveUser">Save task</a>
-                <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
-                <a href="#" id="clearUser">Clear task</a>
-            </nav>
-
-        </form>
-
-    </section>
 
     <section>
         <div>
@@ -230,9 +188,9 @@
 <script id="taskRow" type="text/x-jQuery-tmpl">
 <tr>
     <td {{if complete == true}}class="taskCompleted"{{/if}}>${userId}</td>
-    <td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}>${name}</td>
     <td>{{if complete == true}}class="taskCompleted"{{/if}}${priority}</td>
-    <td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${requiredBy}">${requiredBy}</time></td>
+    <td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${dueDate}">${dueDate}</time></td>
     <td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
     <td>
         <nav>

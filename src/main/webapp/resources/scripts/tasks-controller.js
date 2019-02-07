@@ -209,9 +209,12 @@ tasksController = function () {
 
 				$(taskPage).find('#saveTask').click(function (evt) {
 					evt.preventDefault();
-					if ($(taskPage).find('form').valid()) {
-						var task = $(taskPage).find('form').toObject();
+					const taskForm = $(taskPage).find('#taskForm');
+					if (taskForm.valid()) {
+						var task = taskForm.toObject();
+						console.log("The old task is ", task);
 						storageEngine.save('task', task, function () {
+							console.log("The new task is ", task);
 							$(taskPage).find('#tblTasks tbody').empty();
 							tasksController.loadTasks();
 							clearTask();
@@ -254,9 +257,6 @@ tasksController = function () {
 				});
 
 				/* Sort tasks */
-				$("#saveUser").click(function() {
-					console.log("Save user to the server");
-				});
 				$("#sortID").on('click', sortTableByID);
 				$("#sortpriority").on('click', sortTablePriority);
 
@@ -283,7 +283,7 @@ tasksController = function () {
 			$(taskPage).find('#tblTasks tbody').empty();
 			storageEngine.findAll('task', function (tasks) {
 				tasks.sort(function (o1, o2) {
-					return Date.parse(o1.requiredBy).compareTo(Date.parse(o2.requiredBy));
+					return Date.parse(o1.dueDate).compareTo(Date.parse(o2.dueDate));
 				});
 
 				$.each(tasks, function (index, task) {
