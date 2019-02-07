@@ -85,16 +85,14 @@ tasksController = function () {
 	 * Show loader
 	 */
 	function showLoader() {
-		const loadingWrapper = $(taskPage).find('.loading-wrapper');
-		loadingWrapper.removeClass('not');
+		$(taskPage).find('.loadingWrapper').removeClass('not');
 	}
 
 	/**
 	 * Hide loader
 	 */
 	function hideLoader() {
-		const loadingWrapper = $(taskPage).find('.loading-wrapper');
-		loadingWrapper.addClass('not');
+		$(taskPage).find('.loadingWrapper').addClass('not');
 	}
 
 	/**
@@ -293,9 +291,9 @@ tasksController = function () {
 				}
 				$('#taskRow').tmpl(task).appendTo($(taskPage).find('#tblTasks tbody'));
 				taskCountChanged();
-				console.log('Rendering table with server tasks');
 				//renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
 			});
+			console.log('Rendered table with server tasks');
 			hideLoader();
 		},
 		loadTasks: function () {
