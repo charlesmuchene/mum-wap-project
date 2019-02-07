@@ -42,14 +42,14 @@ public class Utilities {
             configuration.addAnnotatedClass(Location.class);
             configuration.addAnnotatedClass(Category.class);
 
-            configuration.getProperties().list(System.out);
-
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties());
-
+            /* Comment out if running locally */
             try {
                 String databaseUrl = System.getenv("DATABASE_URL");
-                if (databaseUrl == null) throw new IllegalArgumentException("Malformed database url");
+                if (databaseUrl == null)
+                    /* Url to use locally */
+                    databaseUrl = "postgres://climate:climate@localhost:5432/wapproject";
                 URI dbUri = new URI(databaseUrl);
                 String username = dbUri.getUserInfo().split(":")[0];
                 String password = dbUri.getUserInfo().split(":")[1];

@@ -82,19 +82,35 @@ tasksController = function () {
 	var initialised = false;
 
 	/**
+	 * Show loader
+	 */
+	function showLoader() {
+		const loadingWrapper = $(taskPage).find('.loading-wrapper');
+		loadingWrapper.removeClass('not');
+	}
+
+	/**
+	 * Hide loader
+	 */
+	function hideLoader() {
+		const loadingWrapper = $(taskPage).find('.loading-wrapper');
+		loadingWrapper.addClass('not');
+	}
+
+	/**
 	 * makes json call to server to get task list.
 	 * currently just testing this and writing return value out to console
 	 * 111917kl
 	 */
 	function retrieveTasksServer() {
+		showLoader();
 		$.ajax("TaskServlet", {
 			"type": "get",
 			dataType: "json"
-			// "data": {
-			//     "first": first,
-			//     "last": last
-			// }
-		}).done(displayTasksServer.bind()); //need reference to the tasksController object
+		}).done(displayTasksServer.bind()) //need reference to the tasksController object
+			.fail(function () {
+				hideLoader();
+			})
 	}
 
 	/**
@@ -164,7 +180,7 @@ tasksController = function () {
 				/**     * 11/19/17kl        */
 				$(taskPage).find('#btnRetrieveTasks').click(function (evt) {
 					evt.preventDefault();
-					console.log('making ajax call');
+					console.log('Making ajax call to retrieve tasks from server');
 					retrieveTasksServer();
 				});
 
@@ -210,13 +226,18 @@ tasksController = function () {
 					evt.preventDefault();
 					const taskForm = $(taskPage).find('#taskForm');
 					if (taskForm.valid()) {
+						showLoader();
 						var task = taskForm.toObject();
 						storageEngine.save('task', task, function () {
 							$(taskPage).find('#tblTasks tbody').empty();
 							tasksController.loadTasks();
 							clearTask();
 							$(taskPage).find('#taskCreation').addClass('not');
-						}, errorLogger);
+							hideLoader();
+						}, function (errorCode, errorMessage) {
+							hideLoader();
+							errorLogger(errorCode, errorMessage)
+						});
 					}
 				});
 
@@ -275,6 +296,7 @@ tasksController = function () {
 				console.log('Rendering table with server tasks');
 				//renderTable(); --skip for now, this just sets style class for overdue tasks 111917kl
 			});
+			hideLoader();
 		},
 		loadTasks: function () {
 			$(taskPage).find('#tblTasks tbody').empty();

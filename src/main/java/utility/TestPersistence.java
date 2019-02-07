@@ -17,7 +17,6 @@ public class TestPersistence {
         Task task = new Task("Task", new Date(), Category.Unknown, 3);
 
         TaskRepository taskRepository = new TaskRepository();
-        System.out.println(task.getName());
         taskRepository.saveTask(task);
         task = taskRepository.getTask(1);
         System.out.println(task.getName());
